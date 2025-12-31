@@ -1,0 +1,17 @@
+import connectDB from '../_db.js';
+import Hisab from '../models/Hisab.js';
+import { requireAuth } from '../_auth.js';
+
+export default async function handler(req, res) {
+  if (req.method !== 'GET') return res.status(405).json({ message: 'Method not allowed' });
+  try {
+    await connectDB();
+    const user = requireAuth(req, res);
+    if (!user) return;
+
+    const list = await Hisab.find({ userId: user.id }).sort({ date: -1 });
+    res.json(list);
+  } catch (err) {
+    res.status(500).json({ message: err.message || 'Server error' });
+  }
+}
