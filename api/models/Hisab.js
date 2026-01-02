@@ -14,7 +14,6 @@ const hisabSchema = new mongoose.Schema(
 
 hisabSchema.pre('validate', function (next) {
   this.totalAmount = Number(this.earnedAmount || 0) + Number(this.spentAmount || 0);
-  next();
 });
 
 export default mongoose.models.Hisab || mongoose.model('Hisab', hisabSchema);

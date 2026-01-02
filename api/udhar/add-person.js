@@ -6,8 +6,7 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ message: 'Method not allowed' });
   try {
     await connectDB();
-    const user = requireAuth(req, res);
-    if (!user) return;
+    const user = requireAuth(req);
 
     const { personName } = req.body || {};
     if (!personName) return res.status(400).json({ message: 'personName is required' });
@@ -15,6 +14,9 @@ export default async function handler(req, res) {
     const khata = await UdharKhata.create({ userId: user.id, personName });
     res.status(201).json(khata);
   } catch (err) {
+    if (err.message.includes('Unauthorized') || err.message.includes('token')) {
+      return res.status(401).json({ message: err.message });
+    }
     res.status(500).json({ message: err.message || 'Server error' });
   }
 }

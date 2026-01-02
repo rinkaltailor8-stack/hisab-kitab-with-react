@@ -24,8 +24,10 @@ export default function Hisab() {
         earnedAmount: Number(form.earnedAmount || 0),
         spentAmount: Number(form.spentAmount || 0),
         balanceAmount: Number(form.balanceAmount || 0),
+        balanceSpentAmount: Number(form.balanceSpentAmount || 0),
       });
-      setForm({ date: '', earnedAmount: '', spentAmount: '', balanceAmount: '' });
+      setForm({ date: '', earnedAmount: '', spentAmount: '', balanceAmount: '', balanceSpentAmount: '' });
+      setIsSuccess(true)
       fetchList();
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to add hisab');
@@ -44,7 +46,8 @@ export default function Hisab() {
           <input className="input" type="date" value={form.date} onChange={(e) => setForm((f) => ({ ...f, date: e.target.value }))} required />
           <input className="input" placeholder="Earned amount" type="number" min="0" value={form.earnedAmount} onChange={(e) => setForm((f) => ({ ...f, earnedAmount: e.target.value }))} />
           <input className="input" placeholder="Spent amount" type="number" min="0" value={form.spentAmount} onChange={(e) => setForm((f) => ({ ...f, spentAmount: e.target.value }))} />
-          <input className="input" placeholder="Balance spent" type="number" min="0" value={form.balanceAmount} onChange={(e) => setForm((f) => ({ ...f, balanceAmount: e.target.value }))} />
+          <input className="input" placeholder="Balance Amount" type="number" min="0" value={form.balanceAmount} onChange={(e) => setForm((f) => ({ ...f, balanceAmount: e.target.value }))} />
+          <input className="input" placeholder="Balance Spent Amount" type="number" min="0" value={form.balanceSpentAmount} onChange={(e) => setForm((f) => ({ ...f, balanceSpentAmount: e.target.value }))} />
           {error && <div className="text-red-600">{error}</div>}
           <button className="btn">Save</button>
         </form>
@@ -61,7 +64,8 @@ export default function Hisab() {
                 <th>Earned</th>
                 <th>Spent</th>
                 <th>Total</th>
-                <th>Balance Spent</th>
+                <th>Balance Amount</th>
+                <th>Balance Spent Amount</th>
               </tr>
             </thead>
             <tbody>
@@ -71,12 +75,13 @@ export default function Hisab() {
                   <td>₹{(h.earnedAmount || 0).toFixed(2)}</td>
                   <td>₹{(h.spentAmount || 0).toFixed(2)}</td>
                   <td>₹{(h.totalAmount || 0).toFixed(2)}</td>
+                  <td>₹{(h.balanceSpentAmount || 0).toFixed(2)}</td>
                   <td>₹{(h.balanceAmount || 0).toFixed(2)}</td>
                 </tr>
               ))}
               {list.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="text-gray-500">No records yet.</td>
+                  <td colSpan={6} className="text-gray-500">No records yet.</td>
                 </tr>
               )}
             </tbody>

@@ -4,12 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "node server.js",
+    "client": "cd src && npm run dev",
+    "dev": "node server.js",
+    "dev:all": "npm run server & npm run client",
+    "install:all": "npm install && cd src && npm install",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",
     "bcrypt": "^6.0.0",

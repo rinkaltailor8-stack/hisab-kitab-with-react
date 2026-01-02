@@ -7,17 +7,15 @@ export function getTokenFromHeader(req) {
   return header.startsWith('Bearer ') ? header.slice(7) : null;
 }
 
-export function requireAuth(req, res) {
+export function requireAuth(req) {
+  const token = getTokenFromHeader(req);
+  if (!token) {
+    throw new Error('Unauthorized: No token provided');
+  }
   try {
-    const token = getTokenFromHeader(req);
-    if (!token) {
-      res.status(401).json({ message: 'Unauthorized' });
-      return null;
-    }
     const decoded = verifyToken(token);
     return { id: decoded.id, email: decoded.email };
   } catch {
-    res.status(401).json({ message: 'Invalid or expired token' });
-    return null;
+    throw new Error('Invalid or expired token');
   }
 }
